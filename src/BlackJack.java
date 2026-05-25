@@ -28,6 +28,10 @@ public class BlackJack {
             }
             return Integer.parseInt(value); //2-10
         }
+
+        public boolean isAce() {
+            return value == "A";
+        }
     }
 
     ArrayList<Card> deck;
@@ -38,6 +42,11 @@ public class BlackJack {
     ArrayList<Card> dealerHand;
     int dealerSum;
     int dealerAceCount;  
+
+    //player
+    ArrayList<Card> playerHand;
+    int playerSum;
+    int playerAceCount;
 
     BlackJack() {
         startGame();
@@ -55,6 +64,37 @@ public class BlackJack {
 
         hiddenCard = deck.remove(deck.size() - 1);
         dealerSum += hiddenCard.getValue();
+        dealerAceCount += hiddenCard.isAce() ? 1 : 0;
+
+        Card card = deck.remove(deck.size() - 1);
+        dealerSum += card.getValue();
+        dealerAceCount += card.isAce() ? 1 : 0;
+        dealerHand.add(card);
+
+        System.out.println("Dealer:");
+        System.out.println(hiddenCard);
+        System.out.println(dealerHand);
+        System.out.println(dealerSum);
+        System.out.println(dealerAceCount);
+        
+
+
+        //player
+        playerHand = new ArrayList<Card>();
+        playerSum = 0;
+        playerAceCount = 0;
+
+        for (int i = 0; i < 2; i++) {
+            Card playerCard = deck.remove(deck.size() - 1);
+            playerSum += playerCard.getValue();
+            playerAceCount += playerCard.isAce() ? 1 : 0;
+            playerHand.add(playerCard);
+        }
+
+        System.out.println("PLAYER:");
+        System.out.println(playerHand);
+        System.out.println(playerSum); 
+        System.out.println(playerAceCount);
     }
 
     public void buildDeck() {
