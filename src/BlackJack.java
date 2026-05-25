@@ -9,7 +9,7 @@ public class BlackJack {
     private class Card {
         String value;
         String type;
-        
+
         Card(String value, String type) {
             this.value = value;
             this.type = type;
@@ -18,18 +18,43 @@ public class BlackJack {
         public String toString() {
             return value + "-" + type;
         }
+
+        public int getValue() {
+            if ("AJQK".contains(value)) {//A J Q K
+                if (value == "A") {
+                    return 11;
+                }
+                return 10;
+            }
+            return Integer.parseInt(value); //2-10
+        }
     }
 
     ArrayList<Card> deck;
     Random random = new Random();
+
+    //dealer
+    Card hiddenCard;
+    ArrayList<Card> dealerHand;
+    int dealerSum;
+    int dealerAceCount;  
 
     BlackJack() {
         startGame();
     }
 
     public void startGame() {
+        //deck
         buildDeck();
         shuffleDeck();
+
+        //dealer
+        dealerHand = new ArrayList<Card>();
+        dealerSum = 0;
+        dealerAceCount = 0;
+
+        hiddenCard = deck.remove(deck.size() - 1);
+        dealerSum += hiddenCard.getValue();
     }
 
     public void buildDeck() {
@@ -45,6 +70,19 @@ public class BlackJack {
         }
 
         System.out.println("Build Deck:");
+        System.out.println(deck);
+    }
+
+    public void shuffleDeck() {
+        for (int i = 0; i < deck.size(); i++) {
+            int j = random.nextInt(deck.size());
+            Card currCard = deck.get(i);
+            Card randomCard = deck.get(j);
+            deck.set(i, randomCard);
+            deck.set(j, currCard);
+        }
+
+        System.out.println("AFTER SHUFFLE");
         System.out.println(deck);
     }
 }
