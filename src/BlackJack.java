@@ -111,6 +111,37 @@ public class BlackJack {
         stayButton.setFocusable(false);
         buttonPanel.add(stayButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        hitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Card card = deck.remove(deck.size()-1);
+                playerSum += card.getValue();
+                playerAceCount += card.isAce() ? 1 : 0;
+                playerHand.add(card);
+                if (reducePlayerAce() > 21) { //A + 2 + J --> 1 + 2 + 10
+                    hitButton.setEnabled(false);
+                }
+
+                gamePanel.repaint();
+            }
+        });
+
+        stayButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                hitButton.setEnabled(false);
+                stayButton.setEnabled(false);
+
+                while (dealerSum < 17) {
+                    Card card = deck.remove(deck.size()-1);
+                    dealerSum += card.getValue();
+                    dealerAceCount += card.isAce() ? 1 : 0;
+                    dealerHand.add(card);
+                }
+                gamePanel.repaint();
+            }
+        });
+
+        gamePanel.repaint();
     }
 
     public void startGame() {
@@ -185,6 +216,22 @@ public class BlackJack {
 
         System.out.println("AFTER SHUFFLE");
         System.out.println(deck);
+    }
+
+    public int reducePlayerAce() {
+        while (playerSum > 21 && playerAceCount > 0) {
+            playerSum -= 10;
+            playerAceCount--;
+        }
+        return playerSum;
+    }
+
+    public int reduceDealerAce() {
+        while (dealerSum > 21 && dealerAceCount > 0) {
+            dealerSum -= 10;
+            dealerAceCount--;
+        }
+        return dealerSum;
     }
 }
 
