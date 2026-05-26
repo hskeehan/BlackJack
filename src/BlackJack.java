@@ -14,7 +14,7 @@ public class BlackJack {
             this.value = value;
             this.type = type;
         }
-
+        //used for calling .png images
         public String toString() {
             return value + "-" + type;
         }
@@ -55,7 +55,7 @@ public class BlackJack {
     //window
     int boardWidth = 600;
     int boardHeight = boardWidth;
-
+    //card dimensions
     int cardWidth = 110;
     int cardHeight = 154;
 
@@ -66,7 +66,7 @@ public class BlackJack {
             super.paintComponent(g);
 
             try {
-                //draw hidden card
+                //draw hidden card and show if player hits stay
                 Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/Back.png")).getImage();
                 if (!stayButton.isEnabled()) {
                     hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
@@ -87,14 +87,14 @@ public class BlackJack {
                     g.drawImage(cardImg, 20 + (cardWidth + 5) * i, 320, cardWidth, cardHeight, null);
                 }
 
-                if (!stayButton.isEnabled()) {
+                if (!stayButton.isEnabled()) {  //if player hits stay, check for win
                     dealerSum = reduceDealerAce();
                     playerSum = reducePlayerAce();
                     System.out.println("STAY: ");
                     System.out.println(dealerSum);
                     System.out.println(playerSum);
 
-                    String message = "";
+                    String message = "";          //(win/loss) logic
                     if (playerSum > 21) {
                         message = "You Lose!";
                     }
@@ -182,7 +182,7 @@ public class BlackJack {
         shuffleDeck();
 
         //dealer
-        dealerHand = new ArrayList<Card>();
+        dealerHand = new ArrayList<Card>(); //Creates Player and Dealer Hands
         dealerSum = 0;
         dealerAceCount = 0;
 
@@ -208,7 +208,7 @@ public class BlackJack {
         playerSum = 0;
         playerAceCount = 0;
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {           //draws first two player cards
             Card playerCard = deck.remove(deck.size() - 1);
             playerSum += playerCard.getValue();
             playerAceCount += playerCard.isAce() ? 1 : 0;
@@ -221,7 +221,7 @@ public class BlackJack {
         System.out.println(playerAceCount);
     }
 
-    public void buildDeck() {
+    public void buildDeck() { //Uses values and types to call certain .png images
         deck = new ArrayList<Card>();
         String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         String[] types = {"C", "D", "H", "S"};
@@ -237,7 +237,7 @@ public class BlackJack {
         System.out.println(deck);
     }
 
-    public void shuffleDeck() {
+    public void shuffleDeck() {  //shuffles deck by swapping random card values
         for (int i = 0; i < deck.size(); i++) {
             int j = random.nextInt(deck.size());
             Card currCard = deck.get(i);
@@ -250,15 +250,15 @@ public class BlackJack {
         System.out.println(deck);
     }
 
-    public int reducePlayerAce() {
+    public int reducePlayerAce() { //reduces ace if player exceeds 21
         while (playerSum > 21 && playerAceCount > 0) {
             playerSum -= 10;
             playerAceCount--;
         }
         return playerSum;
-    }
-
-    public int reduceDealerAce() {
+    }                               // ^
+                                    // |
+    public int reduceDealerAce() {  // |
         while (dealerSum > 21 && dealerAceCount > 0) {
             dealerSum -= 10;
             dealerAceCount--;

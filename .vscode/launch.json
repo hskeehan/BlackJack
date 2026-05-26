@@ -1,9 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
-
-
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "BlackJack_b897cab4"
+        },
         {
             "type": "java",
             "name": "Launch BlackJack",
